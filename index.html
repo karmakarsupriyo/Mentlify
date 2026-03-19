@@ -475,7 +475,9 @@ footer{background:#0f172a;color:#94a3b8;padding:48px 0 22px}
     <a href="#videos" onclick="closeDrawer()"><i class="fas fa-video"></i> Videos</a>
     <a href="#reviews" onclick="closeDrawer()"><i class="fas fa-star"></i> Reviews</a>
     <a href="#contact" onclick="closeDrawer()"><i class="fas fa-envelope"></i> Contact</a>
-    <a href="javascript:void(0)" onclick="closeDrawer();openAdm()"><i class="fas fa-lock"></i> Admin</a>
+    <a href="#" onclick="closeDrawer();openAdm();return false;">
+  🔐 Admin Panel
+    </a>
     <a href="https://wa.me/918710022872?text=Hi%20Mentlify%2C%20I%20need%20help" target="_blank" style="color:#22c55e;font-weight:800"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
   </div>
 </div>
@@ -1292,5 +1294,14 @@ window.login = function(email, password){
     });
 }
 </script>
+  <script>
+window.openAdm = function () {
+  document.getElementById("adminBox").style.display = "flex";
+};
+
+window.closeAdm = function () {
+  document.getElementById("adminBox").style.display = "none";
+};
+  </script>
 </body>
 </html>
