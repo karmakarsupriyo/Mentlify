@@ -1055,30 +1055,29 @@ function closeAdm(){document.getElementById('admov').classList.remove('on');}
 document.getElementById('admov').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdm();});
 function renderAdm(){
   const b=document.getElementById('admBody');
-  if(!logged){
-  b.innerHTML=`
-  <div class="login-box">
-    <h3><i class="fas fa-lock" style="color:var(--brand)"></i> Admin Login</h3>
+  b.innerHTML = `
+<div class="login-box">
+  <h3><i class="fas fa-lock" style="color:var(--brand)"></i> Admin Login</h3>
 
-    <div style="margin-bottom:10px">
-      <input id="au" placeholder="Enter Email" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc">
-    </div>
+  <div style="margin-bottom:10px">
+    <input id="au" placeholder="Enter Email" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc">
+  </div>
 
-    <div style="margin-bottom:10px">
-      <input id="ap" type="password" placeholder="Enter Password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc">
-    </div>
+  <div style="margin-bottom:10px">
+    <input id="ap" type="password" placeholder="Enter Password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc">
+  </div>
 
-    <button style="width:100%;padding:10px;border:none;border-radius:8px;background:var(--brand);color:#fff;font-weight:600"
+  <button style="width:100%;padding:10px;border:none;border-radius:8px;background:var(--brand);color:#fff"
     onclick="login(
       document.getElementById('au').value,
       document.getElementById('ap').value
     )">
-      Login
-    </button>
-  </div>
-  `;
-  return;
-  }
+    Login
+  </button>
+</div>
+`;
+return;
+}
     <button class="adm-tab ${'institutions'===curTab?'on':''}" onclick="switchTab('institutions')" data-tab="institutions"><i class="fas fa-university"></i> Institutions</button>
     <button class="adm-tab ${'coaching'===curTab?'on':''}" onclick="switchTab('coaching')" data-tab="coaching"><i class="fas fa-school"></i> Coaching</button>
     <button class="adm-tab ${'teachers'===curTab?'on':''}" onclick="switchTab('teachers')" data-tab="teachers"><i class="fas fa-chalkboard-teacher"></i> Teachers</button>
