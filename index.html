@@ -813,11 +813,7 @@ footer{background:#0f172a;color:#94a3b8;padding:48px 0 22px}
    MENTLIFY v4 — Full JavaScript
    IndexedDB for blobs & institutions
    localStorage for coaching/teachers
-══════════════════════════════════════════ */
-const WA='918710022872',AU='7679975939',AP='Sohini@2006';
-let logged=false,curTab='institutions',vidFilter='all';
-let idb=null,objURLs={},instLogoURLs={};
-let instCourses=[],instLogoFile=null,selectedVidFile=null;
+
 
 /* ── COLORS ── */
 const GCOLS=['linear-gradient(135deg,#1a56db,#7c3aed)','linear-gradient(135deg,#059669,#0891b2)',
@@ -1059,8 +1055,30 @@ function closeAdm(){document.getElementById('admov').classList.remove('on');}
 document.getElementById('admov').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdm();});
 function renderAdm(){
   const b=document.getElementById('admBody');
-  if(!logged){b.innerHTML=`<div class="login-box"><h3><i class="fas fa-lock" style="color:var(--brand)"></i>&nbsp;Admin Login</h3><input id="au" type="text" placeholder="Username (Phone Number)" autocomplete="username"><input id="ap" type="password" placeholder="Password" autocomplete="current-password"><button class="login-btn" onclick="doLogin()">Login to Dashboard</button><div class="login-err" id="lerr">Invalid credentials.</div></div>`;return;}
-  b.innerHTML=`<div class="adm-tabs">
+  if(!logged){
+  b.innerHTML=`
+  <div class="login-box">
+    <h3><i class="fas fa-lock" style="color:var(--brand)"></i> Admin Login</h3>
+
+    <div style="margin-bottom:10px">
+      <input id="au" placeholder="Enter Email" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc">
+    </div>
+
+    <div style="margin-bottom:10px">
+      <input id="ap" type="password" placeholder="Enter Password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc">
+    </div>
+
+    <button style="width:100%;padding:10px;border:none;border-radius:8px;background:var(--brand);color:#fff;font-weight:600"
+    onclick="login(
+      document.getElementById('au').value,
+      document.getElementById('ap').value
+    )">
+      Login
+    </button>
+  </div>
+  `;
+  return;
+  }
     <button class="adm-tab ${'institutions'===curTab?'on':''}" onclick="switchTab('institutions')" data-tab="institutions"><i class="fas fa-university"></i> Institutions</button>
     <button class="adm-tab ${'coaching'===curTab?'on':''}" onclick="switchTab('coaching')" data-tab="coaching"><i class="fas fa-school"></i> Coaching</button>
     <button class="adm-tab ${'teachers'===curTab?'on':''}" onclick="switchTab('teachers')" data-tab="teachers"><i class="fas fa-chalkboard-teacher"></i> Teachers</button>
@@ -1068,11 +1086,6 @@ function renderAdm(){
   </div><div id="tabContent"></div><div class="logout-row"><button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button></div>`;
   renderTab();
 }
-function doLogin(){const u=document.getElementById('au').value,p=document.getElementById('ap').value;if(u===AU&&p===AP){logged=true;renderAdm();}else document.getElementById('lerr').style.display='block';}
-function doLogout(){logged=false;curTab='institutions';renderAdm();}
-function switchTab(t){curTab=t;document.querySelectorAll('.adm-tab').forEach(el=>el.classList.toggle('on',el.dataset.tab===t));renderTab();}
-function renderTab(){const c=document.getElementById('tabContent');if(!c)return;if(curTab==='institutions')rInstAdm(c);else if(curTab==='coaching')rCoachAdm(c);else if(curTab==='teachers')rTeachAdm(c);else rVidAdm(c);}
-
 /* INST ADMIN */
 async function rInstAdm(c){
   let data=[];try{data=await dAll('institutions');}catch(e){}
@@ -1246,6 +1259,35 @@ function submitForm(){
   try{await openDB();await loadBlobs();await loadInstLogos();}catch(e){console.warn(e);}
   renderServices();renderCoaching();await renderInstitutions('all');await renderVideos('all');
 })();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBDwxkMEdnFfKz2APaGzR7HBVoWKdOJoro",
+  authDomain: "mentlify-admin.firebaseapp.com",
+  projectId: "mentlify-admin",
+  storageBucket: "mentlify-admin.firebasestorage.app",
+  messagingSenderId: "1091353856466",
+  appId: "1:1091353856466:web:bbb41295e7dcd26341200b",
+  measurementId: "G-5QQNN2VYQ0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.login = function(email, password){
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Login success ✅");
+      logged = true;
+      openAdm();
+    })
+    .catch(() => {
+      alert("Wrong email or password ❌");
+    });
+}
 </script>
 </body>
 </html>
