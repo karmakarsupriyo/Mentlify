@@ -417,6 +417,24 @@ footer{background:#0f172a;color:#94a3b8;padding:42px 0 20px}
 .spin{animation:sp 1s linear infinite;font-size:1.4rem;color:var(--faint)}
 @keyframes sp{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .loader{display:flex;align-items:center;justify-content:center;padding:44px;gap:9px;color:var(--faint);font-size:.84rem}
+  /* T&C STYLE */
+.tnc-text {
+  font-size: 12px;
+  color: #aaa;
+  margin-left: 5px;
+}
+
+.tnc-list {
+  font-size: 12px;
+  color: #bbb;
+  margin-top: 8px;
+  padding-left: 18px;
+  line-height: 1.5;
+}
+
+.tnc-list li {
+  margin-bottom: 3px;
+}
 
 /* ──── RESPONSIVE ──── */
 @media(max-width:640px){
@@ -604,7 +622,13 @@ footer{background:#0f172a;color:#94a3b8;padding:42px 0 20px}
             <div class="offer-li"><i class="fas fa-check-circle"></i><span><strong>Laptop Reward Opportunity</strong> — For college admissions: every 25th student processed through Mentlify may receive a free laptop.</span></div>
           </div>
           <button class="btn-offer" onclick="offerCTA()"><i class="fab fa-whatsapp"></i> Apply &amp; Get Free Guidance</button>
-          <p class="offer-disc">&#9432; For every 25 successful college admissions processed through Mentlify, one student may receive a laptop as part of a limited promotional campaign valid till 25th May 2025. This offer is exclusively for college admission students. Terms &amp; conditions apply. Mentlify reserves the right to modify or withdraw the offer at any time without prior notice.</p>
+          <p class="offer-disc">&#9432; For every 25 successful college admissions, one student wins a FREE laptop. <span class="tnc-text">(Valid on confirmed admissions only)</span></p>
+          <ul class="tnc-list">
+  <li>Valid on confirmed admissions only</li>
+  <li>One entry per student</li>
+  <li>Laptop model may vary</li>
+  <li>Company decision will be final</li>
+          </ul>
         </div>
         <div class="offer-badge">
           <span class="ob-ico">🎓</span>
@@ -656,7 +680,14 @@ footer{background:#0f172a;color:#94a3b8;padding:42px 0 20px}
         <div class="wcard"><div class="wico"><i class="fas fa-fire"></i></div><h3>Firebase Powered</h3><p>Real-time data. Admin updates listings daily — all changes appear instantly for students.</p></div>
         <div class="wcard"><div class="wico"><i class="fas fa-search"></i></div><h3>Smart Search</h3><p>Find by course, city or type in seconds. Smart filtering built in.</p></div>
         <div class="wcard"><div class="wico"><i class="fas fa-user-graduate"></i></div><h3>FREE Personal Mentor</h3><p>Every admission through Mentlify comes with a dedicated personal mentor.</p></div>
-        <div class="wcard"><div class="wico"><i class="fas fa-laptop"></i></div><h3>Laptop Reward</h3><p>College students: every 25th admission wins a laptop! Valid till 25th May. T&amp;C apply.</p></div>
+        <div class="wcard">
+  <div class="wico"><i class="fas fa-laptop"></i></div>
+  <h3>Laptop Reward</h3>
+  <p>
+    College students: every 25th admission wins a laptop! Valid till 25th May.
+    <span class="tnc-text">T&C apply (Valid on confirmed admissions only)</span>
+  </p>
+        </div>
         <div class="wcard"><div class="wico"><i class="fab fa-whatsapp"></i></div><h3>Instant WhatsApp</h3><p>Zero friction. One tap and you are directly connected to the right institution.</p></div>
         <div class="wcard"><div class="wico"><i class="fas fa-shield-alt"></i></div><h3>Secure &amp; Trusted</h3><p>Firebase Auth, Firestore security rules — only verified admin can manage listings.</p></div>
       </div>
