@@ -13,8 +13,6 @@ import { getFirestore, collection, doc,
          updateDoc, deleteDoc,
          query, where, orderBy,
          limit, serverTimestamp }  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
 // ── Firebase Config & Init ────────────────────────
 const firebaseConfig = {
   apiKey:            "AIzaSyBDwxkMEdnFfKz2APaGzR7HBVoWKdOJoro",
@@ -29,22 +27,8 @@ const firebaseConfig = {
 const app     = initializeApp(firebaseConfig);
 const auth    = getAuth(app);
 const db      = getFirestore(app);
-const storage = getStorage(app);
 
 console.log("Firebase Connected Successfully");
-async function uploadImage(file) {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", "mentlify_upload");
-
-  const res = await fetch("https://api.cloudinary.com/v1_1/deiqcdps2/image/upload", {
-    method: "POST",
-    body: formData
-  });
-
-  const data = await res.json();
-  return data.secure_url;
-}
 
 // ── Globals ───────────────────────────────────────
 const WA = "918710022872";
@@ -532,6 +516,7 @@ function resetForm() {
   document.getElementById("exImgWrap").innerHTML = "";
   document.getElementById("vPrv").style.display  = "none";
   document.getElementById("progWrap").style.display = "none";
+  selImgs = []; selVid = null;
 }
 
 // Wire up file inputs after DOM loads
