@@ -561,6 +561,19 @@ function parseCourses(raw) {
     try { return JSON.parse(l); } catch (_) { return { name: l, duration: "", fees: "", eligibility: "", seats: "" }; }
   }).filter(Boolean);
 }
+async function uploadImage(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "mentlify_upload");
+
+  const res = await fetch("https://api.cloudinary.com/v1_1/deiqcdps2/image/upload", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  return data.secure_url;
+}
 async function uploadVideo(file) {
   const formData = new FormData();
   formData.append("file", file);
