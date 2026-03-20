@@ -13,9 +13,7 @@ import { getFirestore, collection, doc,
          updateDoc, deleteDoc,
          query, where, orderBy,
          limit, serverTimestamp }  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getStorage, ref as sRef,
-         uploadBytesResumable,
-         getDownloadURL }          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 // ── Firebase Config & Init ────────────────────────
 const firebaseConfig = {
@@ -34,6 +32,19 @@ const db      = getFirestore(app);
 const storage = getStorage(app);
 
 console.log("Firebase Connected Successfully");
+async function uploadImage(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "mentlify_upload");
+
+  const res = await fetch("https://api.cloudinary.com/v1_1/deiqcdps2/image/upload", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  return data.secure_url;
+}
 
 // ── Globals ───────────────────────────────────────
 const WA = "918710022872";
@@ -550,6 +561,19 @@ function parseCourses(raw) {
     try { return JSON.parse(l); } catch (_) { return { name: l, duration: "", fees: "", eligibility: "", seats: "" }; }
   }).filter(Boolean);
 }
+async function uploadVideo(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "mentlify_upload");
+
+  const res = await fetch("https://api.cloudinary.com/v1_1/deiqcdps2/video/upload", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  return data.secure_url;
+}
 
 window.saveInst = async function () {
   const name = getVal("fName"), type = getVal("fType");
@@ -558,38 +582,29 @@ window.saveInst = async function () {
   sb.disabled = true; sb.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Saving…`;
   const pw = document.getElementById("progWrap"), pf = document.getElementById("pFill"), pl = document.getElementById("pLbl");
   try {
-    // Upload new images to Firebase Storage
-    let newImgURLs = [];
-    if (selImgs.length) {
-      pw.style.display = "block";
-      for (let i = 0; i < selImgs.length; i++) {
-        const f = selImgs[i];
-        const storageRef = sRef(storage, `inst/${Date.now()}_${f.name}`);
-        const task = uploadBytesResumable(storageRef, f);
-        await new Promise((res, rej) => task.on("state_changed",
-          sn => { const p = Math.round((sn.bytesTransferred / sn.totalBytes) * 100); pf.style.width = p + "%"; pl.textContent = `Uploading image ${i + 1}/${selImgs.length}… ${p}%`; },
-          rej, res
-        ));
-        newImgURLs.push(await getDownloadURL(storageRef));
-      }
-    }
+    // Upload images to Cloudinary
+let newImgURLs = [];
 
-    // Upload video to Firebase Storage
-    let videoUrl = "";
-    if (fMode === "edit" && fDocId) {
-      const existing = await getDoc(doc(db, "institutions", fDocId));
-      videoUrl = existing.data()?.videoUrl || "";
-    }
-    if (selVid) {
-      pw.style.display = "block";
-      const storageRef = sRef(storage, `inst/vids/${Date.now()}_${selVid.name}`);
-      const task = uploadBytesResumable(storageRef, selVid);
-      await new Promise((res, rej) => task.on("state_changed",
-        sn => { const p = Math.round((sn.bytesTransferred / sn.totalBytes) * 100); pf.style.width = p + "%"; pl.textContent = `Uploading video… ${p}%`; },
-        rej, res
-      ));
-      videoUrl = await getDownloadURL(storageRef);
-    }
+if (selImgs.length) {
+  for (let i = 0; i < selImgs.length; i++) {
+    const f = selImgs[i];
+    const url = await uploadImage(f);
+    newImgURLs.push(url);
+  }
+}
+
+    // Upload video to Cloudinary
+let videoUrl = "";
+
+if (fMode === "edit" && fDocId) {
+  const existing = await getDoc(doc(db, "institutions", fDocId));
+  videoUrl = existing.data()?.videoUrl || "";
+}
+
+if (selVid) {
+  videoUrl = await uploadVideo(selVid);
+}
+
     pw.style.display = "none";
 
     const allImgs = [...existImgs, ...newImgURLs];
